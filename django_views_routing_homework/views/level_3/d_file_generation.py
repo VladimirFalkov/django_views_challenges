@@ -15,7 +15,24 @@
 """
 
 from django.http import HttpResponse, HttpRequest
+from faker import Faker
+
+
+def generate_fake_text(text_length: int) -> str:
+    fake = Faker()
+    return fake.text(text_length)
 
 
 def generate_file_with_text_view(request: HttpRequest) -> HttpResponse:
-    pass  # код писать тут
+    length = request.POST.get("length")
+    if not length or int(length) > 1000:
+        return HttpResponse(status=403)
+
+    generated_text = generate_fake_text(int(length))
+    filename = f"{generated_text.split()[0].lower()}.txt"
+
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+    return response
