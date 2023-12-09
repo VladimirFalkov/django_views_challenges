@@ -10,7 +10,16 @@
 """
 
 from django.http import HttpResponse, HttpRequest
+import requests
 
 
 def fetch_name_from_github_view(request: HttpRequest, github_username: str) -> HttpResponse:
-    pass  # код писать тут
+    data_about_user = requests.get(f"https://api.github.com/users/{github_username}").json()
+
+    if data_about_user:
+        if "name" in data_about_user:
+            return HttpResponse(data_about_user["name"])
+        else:
+            return HttpResponse(None, status=404)
+    else:
+        return HttpResponse(None, status=404)
