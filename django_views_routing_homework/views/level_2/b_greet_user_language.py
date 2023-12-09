@@ -15,13 +15,14 @@ from django.http import HttpResponse
 
 
 def greet_user_in_different_languages_view(request, name: str, language: str):
+    print(request)
     titled_name = name.title()
 
-    if language == 'ru':
-        response_content = f'Привет, {titled_name}'
-    elif language == 'en':
-        response_content = f'Hello, {titled_name}'
+    if language == "ru":
+        response_content = f"Привет, {titled_name}"
+    elif language == "en":
+        response_content = f"Hello, {titled_name}"
     else:
-        response_content = f'👋, {titled_name}'
+        response_content = f"👋, {titled_name}"
 
     return HttpResponse(response_content)
